@@ -9,6 +9,7 @@ contract StarNotary is ERC721 {
     // Star data
     struct Star {
         string name;
+        string symbol;
     }
 
     constructor() ERC721("Star", "ST") {}
@@ -22,10 +23,10 @@ contract StarNotary is ERC721 {
     // mapping the TokenId and price
     mapping(uint256 => uint256) public starsForSale;
 
-    // Create Star using the Struct
-    function createStar(string memory _name, uint256 _tokenId) public {
+    // Create Star using the Struct with symbol
+    function createStar(string memory _name, uint256 _tokenId, string memory _symbol) public {
         // Passing the name and tokenId as a parameters
-        Star memory newStar = Star(_name); // Star is an struct so we are creating a new Star
+        Star memory newStar = Star(_name,_symbol); // Star is an struct so we are creating a new Star
         tokenIdToStarInfo[_tokenId] = newStar; // Creating in memory the Star -> tokenId mapping
         _mint(msg.sender, _tokenId); // _mint assign the the star with _tokenId to the sender address (ownership)
     }
