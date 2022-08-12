@@ -65,8 +65,10 @@ contract StarNotary is ERC721 {
         returns (string memory)
     {
         //1. You should return the Star saved in tokenIdToStarInfo mapping
-        string memory x = "x";
-        return x;
+        string memory response;
+        response = tokenIdToStarInfo[_tokenId].name;
+        require(bytes(response).length > 0, "Star does not exists");
+        return response;
     }
 
     // Implement Task 1 Exchange Stars function
