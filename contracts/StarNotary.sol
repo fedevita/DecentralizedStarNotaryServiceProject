@@ -9,10 +9,15 @@ contract StarNotary is ERC721 {
     // Star data
     struct Star {
         string name;
-        string symbol;
     }
 
-    constructor() ERC721("Star", "ST") {}
+    // string name;
+    // string symbol; 
+
+    constructor( string memory _name, string memory _symbol) ERC721(_name, _symbol) {
+      // name = _name;
+      // symbol = _symbol;
+    }
 
     // Implement Task 1 Add a name and symbol properties
     // name: Is a short name to your token
@@ -24,9 +29,9 @@ contract StarNotary is ERC721 {
     mapping(uint256 => uint256) public starsForSale;
 
     // Create Star using the Struct with symbol
-    function createStar(string memory _name, uint256 _tokenId, string memory _symbol) public {
+    function createStar(string memory _name, uint256 _tokenId) public {
         // Passing the name and tokenId as a parameters
-        Star memory newStar = Star(_name,_symbol); // Star is an struct so we are creating a new Star
+        Star memory newStar = Star(_name); // Star is an struct so we are creating a new Star
         tokenIdToStarInfo[_tokenId] = newStar; // Creating in memory the Star -> tokenId mapping
         _mint(msg.sender, _tokenId); // _mint assign the the star with _tokenId to the sender address (ownership)
     }
@@ -75,9 +80,18 @@ contract StarNotary is ERC721 {
     // Implement Task 1 Exchange Stars function
     function exchangeStars(uint256 _tokenId1, uint256 _tokenId2) public {
         //1. Passing to star tokenId you will need to check if the owner of _tokenId1 or _tokenId2 is the sender
+        require(ownerOf(_tokenId1) == msg.sender || ownerOf(_tokenId2) == msg.sender,"sender does not own the tokens");
         //2. You don't have to check for the price of the token (star)
         //3. Get the owner of the two tokens (ownerOf(_tokenId1), ownerOf(_tokenId2)
+        address owner1 = ownerOf(_tokenId1);
+        address owner2 = ownerOf(_tokenId2);
         //4. Use _transferFrom function to exchange the tokens.
+        _approve(owner1, _tokenId1);
+        _approve(owner2, _tokenId2);
+        _approve(owner1, _tokenId2);
+        _approve(owner2, _tokenId1);
+        transferFrom(owner1, owner2, _tokenId1);
+        transferFrom(owner2, owner1, _tokenId2);
     }
 
     // Implement Task 1 Transfer Stars
