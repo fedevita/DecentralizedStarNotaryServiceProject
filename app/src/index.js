@@ -35,14 +35,16 @@ const App = {
     const { createStar } = this.meta.methods;
     const name = document.getElementById("starName").value;
     const id = document.getElementById("starId").value;
-    const symbol = document.getElementById("starSymbol").value;
-    await createStar(name, id, symbol).send({ from: this.account });
+    await createStar(name, id).send({ from: this.account });
     App.setStatus("New Star Owner is " + this.account + ".");
   },
 
   // Implement Task 4 Modify the front end of the DAPP
   lookUp: async function (){
-    
+    const { lookUptokenIdToStarInfo } = this.meta.methods;
+    const id = Number(document.getElementById("lookid").value);
+    const name = await lookUptokenIdToStarInfo(id).call();
+    App.setStatus(`Star with ID ${id} is ${name}`);
   }
 
 };
