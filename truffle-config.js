@@ -22,11 +22,13 @@
  *
  */
 
-// const HDWallet = require('truffle-hdwallet-provider');
+var HDWalletProvider = require("truffle-hdwallet-provider");
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+const { INFURA_Access_Token, mnemonic } = require("./keys");
+
 
 module.exports = {
   /**
@@ -75,7 +77,8 @@ module.exports = {
 
     rinkeby: {
       provider: function () {
-        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/<INFURA_Access_Token>");
+        console.log("mnemonic is:", mnemonic)
+        return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${INFURA_Access_Token}`);
       },
       network_id: 4,
       gas: 4500000,
